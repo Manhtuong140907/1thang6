@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chúc mừng 1/6</title>
+    <style>
+        body {
+            background: #111; /* nền tối hơn để làm nổi chữ */
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .rain {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .falling-word {
+            position: absolute;
+            font-size: 3.5rem; /* to hơn */
+            font-weight: 900; /* đậm hơn */
+            white-space: pre;
+            animation: fall linear;
+            color: #fff;
+            text-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 15px #00f6ff,
+                0 0 20px #00f6ff;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0.3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="rain"></div>
+    <script>
+        const message = "🎉 1/6 vui vẻ nhé manh nhỏ xíu! 🎈";
+        const rain = document.querySelector('.rain');
+        const drops = 10;
+        const colors = [
+            "#ffffff", "#00f6ff", "#ffeb3b", "#ff69b4", "#4caf50", "#ff5722", "#9c27b0"
+        ];
+
+        function randomColor() {
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function createDrop() {
+            const span = document.createElement('span');
+            span.className = 'falling-word';
+            span.textContent = message;
+            span.style.left = (5 + Math.random() * 90) + 'vw';
+            span.style.top = '-60px';
+            span.style.animationDuration = (2 + Math.random() * 2.5) + 's';
+            span.style.color = randomColor();
+            span.style.textShadow = `0 0 10px ${randomColor()}, 0 0 20px white`;
+            rain.appendChild(span);
+
+            let colorInterval = setInterval(() => {
+                const c = randomColor();
+                span.style.color = c;
+                span.style.textShadow = `0 0 10px ${c}, 0 0 20px white`;
+            }, 300);
+
+            span.addEventListener('animationend', () => {
+                clearInterval(colorInterval);
+                span.remove();
+                createDrop();
+            });
+        }
+
+        for (let i = 0; i < drops; i++) {
+            setTimeout(createDrop, i * 300);
+        }
+    </script>
+</body>
+</html>
